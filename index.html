@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel "Northern Lights" - Отель "Северное Сияние"</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-star"></i> <span class="ru-text">Северное Сияние</span><span class="en-text">Northern Lights</span></h1>
+                <p class="ru-text">Пятизвездочный отель премиум-класса</p>
+                <p class="en-text">Premium five-star hotel</p>
+            </div>
+            <nav class="nav">
+                <a href="#home" class="active"><i class="fas fa-home"></i> <span class="ru-text">Главная</span><span class="en-text">Home</span></a>
+                <a href="#rooms"><i class="fas fa-bed"></i> <span class="ru-text">Номера</span><span class="en-text">Rooms</span></a>
+                <a href="#booking"><i class="fas fa-calendar-check"></i> <span class="ru-text">Бронь</span><span class="en-text">Booking</span></a>
+                <a href="#services"><i class="fas fa-spa"></i> <span class="ru-text">Услуги</span><span class="en-text">Services</span></a>
+                <a href="#gallery"><i class="fas fa-images"></i> <span class="ru-text">Фото</span><span class="en-text">Photos</span></a>
+                <a href="#contacts"><i class="fas fa-phone"></i> <span class="ru-text">Контакты</span><span class="en-text">Contacts</span></a>
+                <button class="lang-switcher" id="langSwitch">
+                    <i class="fas fa-language"></i> EN/RU
+                </button>
+                <a href="admin-panel.html" class="admin-btn"><i class="fas fa-cog"></i> <span class="ru-text">Админ</span><span class="en-text">Admin</span></a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Герой-секция -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="ru-text">Роскошный отдых с видом на северное сияние</h2>
+                <h2 class="en-text">Luxury vacation with aurora borealis view</h2>
+                <p class="ru-text">Эксклюзивный пятизвездочный отель с панорамными видами и безупречным сервисом</p>
+                <p class="en-text">Exclusive five-star hotel with panoramic views and impeccable service</p>
+                
+                <!-- Форма поиска -->
+                <div class="search-box">
+                    <div class="input-group">
+                        <label><i class="fas fa-calendar-plus"></i> <span class="ru-text">Заезд</span><span class="en-text">Check-in</span></label>
+                        <input type="date" id="checkin">
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fas fa-calendar-minus"></i> <span class="ru-text">Выезд</span><span class="en-text">Check-out</span></label>
+                        <input type="date" id="checkout">
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fas fa-users"></i> <span class="ru-text">Взрослые</span><span class="en-text">Adults</span></label>
+                        <select id="adults">
+                            <option value="1">1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fas fa-child"></i> <span class="ru-text">Дети</span><span class="en-text">Children</span></label>
+                        <select id="children">
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <button class="btn-search" id="searchBtn">
+                        <i class="fas fa-search"></i> <span class="ru-text">Найти номер</span><span class="en-text">Find Room</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Номера -->
+    <section class="rooms" id="rooms">
+        <div class="container">
+            <h2 class="section-title ru-text">Наши номера</h2>
+            <h2 class="section-title en-text">Our Rooms</h2>
+            <p class="section-subtitle ru-text">Выберите идеальный номер для незабываемого пребывания</p>
+            <p class="section-subtitle en-text">Choose the perfect room for an unforgettable stay</p>
+            
+            <div class="rooms-grid" id="roomsGrid">
+                <!-- Номера загружаются через JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Бронирование -->
+    <section class="booking" id="booking">
+        <div class="container">
+            <h2 class="section-title ru-text">Бронирование номера</h2>
+            <h2 class="section-title en-text">Room Booking</h2>
+            
+            <div class="booking-container">
+                <div class="booking-form">
+                    <h3><i class="fas fa-edit"></i> <span class="ru-text">Данные для брони</span><span class="en-text">Booking Details</span></h3>
+                    
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label><i class="fas fa-user"></i> <span class="ru-text">ФИО *</span><span class="en-text">Full Name *</span></label>
+                            <input type="text" id="fullName" placeholder="Иванов Иван Иванович" required>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-envelope"></i> Email *</label>
+                            <input type="email" id="email" placeholder="ivanov@mail.ru" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label><i class="fas fa-phone"></i> <span class="ru-text">Телефон *</span><span class="en-text">Phone *</span></label>
+                            <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" required>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-bed"></i> <span class="ru-text">Номер *</span><span class="en-text">Room *</span></label>
+                            <select id="roomSelect" required>
+                                <option value=""><span class="ru-text">Выберите номер...</span><span class="en-text">Select room...</span></option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label><i class="fas fa-calendar-alt"></i> <span class="ru-text">Дата заезда *</span><span class="en-text">Check-in Date *</span></label>
+                            <input type="date" id="bookCheckin" required>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-calendar-alt"></i> <span class="ru-text">Дата выезда *</span><span class="en-text">Check-out Date *</span></label>
+                            <input type="date" id="bookCheckout" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label><i class="fas fa-users"></i> <span class="ru-text">Взрослые</span><span class="en-text">Adults</span></label>
+                            <input type="number" id="bookAdults" min="1" max="4" value="2">
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-child"></i> <span class="ru-text">Дети</span><span class="en-text">Children</span></label>
+                            <input type="number" id="bookChildren" min="0" max="3" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label><i class="fas fa-clock"></i> <span class="ru-text">Время заезда</span><span class="en-text">Check-in Time</span></label>
+                            <select id="checkinTime">
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-clock"></i> <span class="ru-text">Время выезда</span><span class="en-text">Check-out Time</span></label>
+                            <select id="checkoutTime">
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="input-group full-width">
+                            <label><i class="fas fa-utensils"></i> <span class="ru-text">Питание</span><span class="en-text">Meals</span></label>
+                            <div class="meal-option">
+                                <input type="checkbox" id="breakfast" checked>
+                                <label for="breakfast">
+                                    <span class="ru-text">Завтрак включен (09:00 - 11:00)</span>
+                                    <span class="en-text">Breakfast included (09:00 - 11:00)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="input-group full-width">
+                            <label><i class="fas fa-comment"></i> <span class="ru-text">Особые пожелания</span><span class="en-text">Special Requests</span></label>
+                            <textarea id="specialRequests" placeholder="Цветы в номере, поздний выезд..." rows="2"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="price-box">
+                        <div class="price-info">
+                            <span class="ru-text">Ночей:</span>
+                            <span class="en-text">Nights:</span>
+                            <span id="nightsCount">0</span>
+                        </div>
+                        <div class="price-info">
+                            <span class="ru-text">Цена за ночь:</span>
+                            <span class="en-text">Price per night:</span>
+                            <span id="nightPrice">0 руб.</span>
+                        </div>
+                        <div class="price-total">
+                            <span class="ru-text">Итого к оплате:</span>
+                            <span class="en-text">Total:</span>
+                            <span id="totalPrice">0 руб.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-methods">
+                        <h4><i class="fas fa-credit-card"></i> <span class="ru-text">Способ оплаты:</span><span class="en-text">Payment Method:</span></h4>
+                        <div class="payment-options">
+                            <label>
+                                <input type="radio" name="payment" value="card" checked>
+                                <i class="fas fa-credit-card"></i> <span class="ru-text">Банковская карта</span><span class="en-text">Credit Card</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="payment" value="qr">
+                                <i class="fas fa-qrcode"></i> <span class="ru-text">SBP / QR-код</span><span class="en-text">SBP / QR Code</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="payment" value="cash">
+                                <i class="fas fa-money-bill-wave"></i> <span class="ru-text">Оплата при заселении</span><span class="en-text">Payment on Arrival</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-book" id="bookBtn">
+                        <i class="fas fa-check-circle"></i> <span class="ru-text">Забронировать</span><span class="en-text">Book Now</span>
+                    </button>
+                    
+                    <p class="note"><i class="fas fa-info-circle"></i> <span class="ru-text">Бесплатная отмена за 48 часов до заезда</span><span class="en-text">Free cancellation 48 hours before check-in</span></p>
+                </div>
+                
+                <div class="bookings-list">
+                    <h3><i class="fas fa-history"></i> <span class="ru-text">Ваши бронирования</span><span class="en-text">Your Bookings</span></h3>
+                    <div class="bookings-container" id="bookingsContainer">
+                        <p class="empty ru-text">У вас пока нет бронирований</p>
+                        <p class="empty en-text">You have no bookings yet</p>
+                    </div>
+                    <div class="booking-actions">
+                        <button class="action-btn print-btn" id="printBookings">
+                            <i class="fas fa-print"></i> <span class="ru-text">Распечатать</span><span class="en-text">Print</span>
+                        </button>
+                        <button class="action-btn email-btn" id="emailBookings">
+                            <i class="fas fa-envelope"></i> <span class="ru-text">Отправить на email</span><span class="en-text">Send by Email</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Галерея отеля -->
+    <section class="gallery" id="gallery">
+        <div class="container">
+            <h2 class="section-title ru-text">Фотографии отеля</h2>
+            <h2 class="section-title en-text">Hotel Photos</h2>
+            <p class="section-subtitle ru-text">Посмотрите фотографии нашего отеля и номеров</p>
+            <p class="section-subtitle en-text">View photos of our hotel and rooms</p>
+            
+            <div class="hotel-gallery">
+                <div class="gallery-main">
+                    <img id="mainGalleryImage" src="images/hotel-exterior.jpg" alt="Отель Северное Сияние">
+                </div>
+                <div class="gallery-thumbs"><!-- Логотип -->
+<img src="images/logo.png" alt="Логотип отеля">
+
+<!-- Номера -->
+<img src="images/room-standard.jpg" alt="Стандартный номер">
+<img src="images/room-suite.jpg" alt="Сьют">
+<img src="images/junior-suite.jpg" alt="Джуниор сьют">
+
+<!-- Ресторан -->
+<img src="images/restaurant1.jpg" alt="Ресторан">
+
+<!-- СПА -->
+<img src="images/spa-center1.jpg" alt="СПА центр">
+
+<!-- Фитнес -->
+<img src="images/fitness-gym1.jpg" alt="Фитнес зал">
+
+<!-- Бассейн -->
+<img src="images/pool.jpg" alt="Бассейн">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Услуги -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title ru-text">Услуги отеля</h2>
+            <h2 class="section-title en-text">Hotel Services</h2>
+            <p class="section-subtitle ru-text">Мы создали всё для вашего комфорта и удовольствия</p>
+            <p class="section-subtitle en-text">Everything for your comfort and pleasure</p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3 class="ru-text">Ресторан "Аврора"</h3>
+                    <h3 class="en-text">"Aurora" Restaurant</h3>
+                    <p class="ru-text">Изысканная кухня от звездного шеф-повара с панорамным видом на город</p>
+                    <p class="en-text">Exquisite cuisine from a star chef with panoramic city views</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h3 class="ru-text">Спа-центр "Сияние"</h3>
+                    <h3 class="en-text">"Northern Lights" Spa</h3>
+                    <p class="ru-text">Эксклюзивные спа-программы с арктическими травами и минералами</p>
+                    <p class="en-text">Exclusive spa treatments with arctic herbs and minerals</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-swimming-pool"></i>
+                    </div>
+                    <h3 class="ru-text">Бассейн с подогревом</h3>
+                    <h3 class="en-text">Heated Pool</h3>
+                    <p class="ru-text">Крытый бассейн 25м с подсветкой, водопадами и зоной отдыха</p>
+                    <p class="en-text">25m indoor pool with lighting, waterfalls and relaxation area</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <h3 class="ru-text">Фитнес "Полярная звезда"</h3>
+                    <h3 class="en-text">"Polar Star" Fitness</h3>
+                    <p class="ru-text">Современный тренажерный зал с профессиональным тренером</p>
+                    <p class="en-text">Modern gym with professional trainer</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <footer class="footer" id="contacts">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3><i class="fas fa-star"></i> <span class="ru-text">Северное Сияние</span><span class="en-text">Northern Lights</span></h3>
+                    <p class="ru-text">Пятизвездочный отель премиум-класса с уникальной концепцией северного гостеприимства. Сочетание современных технологий и природной эстетики.</p>
+                    <p class="en-text">Premium five-star hotel with unique northern hospitality concept. Blend of modern technology and natural aesthetics.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="ru-text">Контакты</h3>
+                    <h3 class="en-text">Contacts</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> <span class="ru-text">г. Мурманск, пр. Ленина, 82</span><span class="en-text">Murmansk, Lenina Ave., 82</span></p>
+                    <p><i class="fas fa-phone"></i> +7 (8152) 45-67-89</p>
+                    <p><i class="fas fa-envelope"></i> info@northern-lights.ru</p>
+                    <p><i class="fas fa-globe"></i> www.northern-lights-hotel.ru</p>
+                    <p><i class="fas fa-clock"></i> <span class="ru-text">Круглосуточная служба приема</span><span class="en-text">24/7 Reception</span></p>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="ru-text">Быстрые ссылки</h3>
+                    <h3 class="en-text">Quick Links</h3>
+                    <a href="#rooms"><i class="fas fa-bed"></i> <span class="ru-text">Номера и цены</span><span class="en-text">Rooms & Prices</span></a>
+                    <a href="#booking"><i class="fas fa-calendar"></i> <span class="ru-text">Бронирование</span><span class="en-text">Booking</span></a>
+                    <a href="#services"><i class="fas fa-spa"></i> <span class="ru-text">Услуги отеля</span><span class="en-text">Hotel Services</span></a>
+                    <a href="#gallery"><i class="fas fa-images"></i> <span class="ru-text">Фотогалерея</span><span class="en-text">Photo Gallery</span></a>
+                    <a href="admin-panel.html"><i class="fas fa-cog"></i> <span class="ru-text">Админ-панель</span><span class="en-text">Admin Panel</span></a>
+                </div>
+                
+                <div class="footer-col">
+                    <h3 class="ru-text">Подписка на новости</h3>
+                    <h3 class="en-text">Newsletter</h3>
+                    <p class="ru-text">Узнавайте первыми о специальных предложениях</p>
+                    <p class="en-text">Be the first to know about special offers</p>
+                    <div class="subscribe-form">
+                        <input type="email" placeholder="Ваш email / Your email">
+                        <button><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                    <p class="privacy-note"><i class="fas fa-lock"></i> <span class="ru-text">Ваши данные защищены</span><span class="en-text">Your data is protected</span></p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 <span class="ru-text">Отель "Северное Сияние". Все права защищены.</span><span class="en-text">Hotel "Northern Lights". All rights reserved.</span></p>
+                <p style="font-size: 14px; margin-top: 10px; opacity: 0.8;">Дипломный проект по веб-разработке / Diploma project in web development</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальные окна -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-icon success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 class="ru-text">Бронирование подтверждено!</h3>
+            <h3 class="en-text">Booking Confirmed!</h3>
+            <p id="modalMessage" class="ru-text">Ваш номер успешно забронирован. Подробности отправлены на email.</p>
+            <p id="modalMessageEn" class="en-text">Your room has been successfully booked. Details sent to email.</p>
+            <div class="booking-details" id="bookingDetails"></div>
+            <button class="btn-ok" id="closeModal">OK</button>
+        </div>
+    </div>
+
+    <div class="modal" id="cancelModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-icon warning">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="ru-text">Отменить бронирование?</h3>
+            <h3 class="en-text">Cancel Booking?</h3>
+            <p class="ru-text">Вы уверены, что хотите отменить это бронирование?</p>
+            <p class="en-text">Are you sure you want to cancel this booking?</p>
+            <div class="modal-buttons">
+                <button class="btn-cancel-no ru-text">Нет</button>
+                <button class="btn-cancel-no en-text">No</button>
+                <button class="btn-cancel-yes ru-text">Да, отменить</button>
+                <button class="btn-cancel-yes en-text">Yes, Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно просмотра фото номера -->
+    <div class="modal" id="roomPhotosModal">
+        <div class="modal-content wide-modal">
+            <span class="close">&times;</span>
+            <h3 id="roomPhotosTitle" class="ru-text">Фотографии номера</h3>
+            <h3 id="roomPhotosTitleEn" class="en-text">Room Photos</h3>
+            <div class="room-photos-gallery" id="roomPhotosGallery">
+                <!-- Фотографии загружаются через JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

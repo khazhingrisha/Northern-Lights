@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - Отель Северное Сияние</title>
+    <link rel="stylesheet" href="admin-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Библиотека для работы с Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- Форма авторизации -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-content">
+            <div class="login-header">
+                <h2><i class="fas fa-lock"></i> Вход в админ-панель</h2>
+                <p>Отель "Северное Сияние"</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> Логин</label>
+                    <input type="text" id="username" placeholder="Введите логин" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-key"></i> Пароль</label>
+                    <input type="password" id="password" placeholder="Введите пароль" required>
+                </div>
+                
+                <div class="form-options">
+                    <label>
+                        <input type="checkbox" id="rememberMe"> Запомнить меня
+                    </label>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Войти
+                </button>
+                
+                <div class="login-error" id="loginError">
+                    Неверный логин или пароль
+                </div>
+                
+                <div class="login-info">
+                    <p><strong>Демо-доступ:</strong></p>
+                    <p>Логин: <code>admin</code></p>
+                    <p>Пароль: <code>admin</code></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Основной интерфейс админ-панели -->
+    <div class="admin-wrapper" id="adminWrapper" style="display: none;">
+        <!-- Боковая панель -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h2><i class="fas fa-cog"></i> Админ-панель</h2>
+                <p>Отель "Северное Сияние"</p>
+                <p class="user-welcome">Вы вошли как: <strong>Администратор</strong></p>
+            </div>
+            
+            <nav class="admin-menu">
+                <a href="#dashboard" class="active">
+                    <i class="fas fa-tachometer-alt"></i> Дашборд
+                </a>
+                <a href="#bookings">
+                    <i class="fas fa-calendar-alt"></i> Бронирования
+                </a>
+                <a href="#rooms">
+                    <i class="fas fa-bed"></i> Номера
+                </a>
+                <a href="#reports">
+                    <i class="fas fa-chart-bar"></i> Отчеты
+                </a>
+                <a href="index.html">
+                    <i class="fas fa-home"></i> На сайт
+                </a>
+            </nav>
+            
+            <div class="user-info">
+                <p><i class="fas fa-user-shield"></i> Администратор: <strong>Анна Смирнова</strong></p>
+                <p><i class="fas fa-clock"></i> Последний вход: <span id="lastLogin">Сегодня</span></p>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Основной контент -->
+        <main class="admin-main">
+            <!-- Дашборд -->
+            <section id="dashboard" class="dashboard active">
+                <h1><i class="fas fa-tachometer-alt"></i> Дашборд отеля "Северное Сияние"</h1>
+                
+                <div class="export-quick-actions">
+                    <h3><i class="fas fa-rocket"></i> Быстрый экспорт</h3>
+                    <div class="quick-buttons">
+                        <button class="quick-export-btn" data-type="today">
+                            <i class="fas fa-calendar-day"></i> Отчет за сегодня
+                        </button>
+                        <button class="quick-export-btn" data-type="month">
+                            <i class="fas fa-calendar-alt"></i> Отчет за месяц
+                        </button>
+                        <button class="quick-export-btn" data-type="all">
+                            <i class="fas fa-database"></i> Все данные
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon total-bookings">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalBookingsCount">0</h3>
+                            <p>Всего бронирований</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon total-revenue">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalRevenue">0 руб.</h3>
+                            <p>Общая выручка</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon occupancy">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="occupancyRate">0%</h3>
+                            <p>Заполняемость</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon rooms-count">
+                            <i class="fas fa-door-closed"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalRooms">4</h3>
+                            <p>Всего номеров</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-clock"></i> Последние бронирования</h2>
+                        <button class="export-section-btn" data-section="recent">
+                            <i class="fas fa-file-export"></i> Экспорт
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Гость</th>
+                                    <th>Номер</th>
+                                    <th>Даты</th>
+                                    <th>Взрослые/Дети</th>
+                                    <th>Сумма</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentBookings">
+                                <!-- Загружается через JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-bed"></i> Статус номеров на сегодня</h2>
+                        <button class="export-section-btn" data-section="rooms">
+                            <i class="fas fa-file-export"></i> Экспорт
+                        </button>
+                    </div>
+                    <div class="rooms-status" id="roomsStatus">
+                        <!-- Загружается через JS -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Бронирования -->
+            <section id="bookings" class="bookings">
+                <div class="section-header">
+                    <h1><i class="fas fa-calendar-alt"></i> Управление бронированиями</h1>
+                    <div class="export-options">
+                        <button class="export-btn" id="exportBtn">
+                            <i class="fas fa-file-export"></i> Экспорт в Excel
+                        </button>
+                        <div class="export-dropdown">
+                            <button class="export-dropdown-btn">
+                                <i class="fas fa-caret-down"></i>
+                            </button>
+                            <div class="export-dropdown-content">
+                                <a href="#" class="export-option" data-format="xlsx">
+                                    <i class="fas fa-file-excel"></i> Excel (.xlsx)
+                                </a>
+                                <a href="#" class="export-option" data-format="csv">
+                                    <i class="fas fa-file-csv"></i> CSV (.csv)
+                                </a>
+                                <a href="#" class="export-option" data-format="json">
+                                    <i class="fas fa-file-code"></i> JSON (.json)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <div class="search-box">
+                        <input type="text" id="searchBooking" placeholder="Поиск по ID, имени или номеру">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-options">
+                        <select id="filterStatus">
+                            <option value="all">Все статусы</option>
+                            <option value="confirmed">Подтвержденные</option>
+                            <option value="cancelled">Отмененные</option>
+                            <option value="completed">Завершенные</option>
+                        </select>
+                        <select id="filterDate">
+                            <option value="all">Все даты</option>
+                            <option value="today">Сегодня</option>
+                            <option value="week">Эта неделя</option>
+                            <option value="month">Этот месяц</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="bookingsTable">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="selectAll"></th>
+                                <th>ID</th>
+                                <th>Гость</th>
+                                <th>Контакты</th>
+                                <th>Номер</th>
+                                <th>Даты</th>
+                                <th>Взрослые/Дети</th>
+                                <th>Время заезда/выезда</th>
+                                <th>Питание</th>
+                                <th>Сумма</th>
+                                <th>Оплата</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allBookings">
+                            <!-- Загружается через JS -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                                    <div class="table-summary">
+                                        <strong>Итого выбрано:</strong>
+                                        <span id="selectedCount">0</span> из <span id="totalCount">0</span>
+                                    </div>
+                                </td>
+                                <td colspan="6">
+                                    <div class="table-actions">
+                                        <button class="action-btn export-selected-btn" id="exportSelectedBtn">
+                                            <i class="fas fa-file-export"></i> Экспорт выбранных
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Номера -->
+            <section id="rooms" class="rooms-admin">
+                <div class="section-header">
+                    <h1><i class="fas fa-bed"></i> Управление номерами</h1>
+                    <button class="export-btn" id="exportRoomsBtn">
+                        <i class="fas fa-file-export"></i> Экспорт номеров
+                    </button>
+                </div>
+                
+                <button class="add-room-btn" id="addRoomBtn">
+                    <i class="fas fa-plus"></i> Добавить номер
+                </button>
+                
+                <div class="rooms-grid" id="adminRoomsGrid">
+                    <!-- Загружается через JS -->
+                </div>
+            </section>
+            
+            <!-- Отчеты -->
+            <section id="reports" class="reports">
+                <h1><i class="fas fa-chart-bar"></i> Финансовые отчеты</h1>
+                
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <div class="report-card-header">
+                            <h3><i class="fas fa-chart-line"></i> Выручка по месяцам</h3>
+                            <button class="export-report-btn" data-report="revenue">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <div class="chart-placeholder">
+                            <p style="color: #666; font-style: italic;">График выручки за последние 6 месяцев</p>
+                        </div>
+                        <div class="report-card-footer">
+                            <button class="generate-report-btn" data-report="revenue">
+                                <i class="fas fa-file-excel"></i> Создать отчет Excel
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <div class="report-card-header">
+                            <h3><i class="fas fa-percentage"></i> Заполняемость номеров</h3>
+                            <button class="export-report-btn" data-report="occupancy">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <div class="chart-placeholder">
+                            <p style="color: #666; font-style: italic;">Диаграмма заполняемости по типам номеров</p>
+                        </div>
+                        <div class="report-card-footer">
+                            <button class="generate-report-btn" data-report="occupancy">
+                                <i class="fas fa-file-excel"></i> Создать отчет Excel
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <div class="report-card-header">
+                            <h3><i class="fas fa-chart-pie"></i> Популярность номеров</h3>
+                            <button class="export-report-btn" data-report="popularity">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <div class="chart-placeholder">
+                            <p style="color: #666; font-style: italic;">Диаграмма популярности номеров</p>
+                        </div>
+                        <div class="report-card-footer">
+                            <button class="generate-report-btn" data-report="popularity">
+                                <i class="fas fa-file-excel"></i> Создать отчет Excel
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <div class="report-card-header">
+                            <h3><i class="fas fa-ban"></i> Анализ отмен</h3>
+                            <button class="export-report-btn" data-report="cancellations">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <div class="chart-placeholder">
+                            <p style="color: #666; font-style: italic;">Статистика отмен бронирований</p>
+                        </div>
+                        <div class="report-card-footer">
+                            <button class="generate-report-btn" data-report="cancellations">
+                                <i class="fas fa-file-excel"></i> Создать отчет Excel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="custom-report-section">
+                    <h3><i class="fas fa-cogs"></i> Настраиваемые отчеты</h3>
+                    <div class="custom-report-options">
+                        <div class="form-group">
+                            <label>Период отчета</label>
+                            <div class="form-row">
+                                <input type="date" id="customStartDate" placeholder="Начальная дата">
+                                <input type="date" id="customEndDate" placeholder="Конечная дата">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Тип данных</label>
+                            <div class="checkboxes">
+                                <label><input type="checkbox" name="dataType" value="bookings" checked> Бронирования</label>
+                                <label><input type="checkbox" name="dataType" value="revenue"> Выручка</label>
+                                <label><input type="checkbox" name="dataType" value="occupancy"> Заполняемость</label>
+                                <label><input type="checkbox" name="dataType" value="guests"> Данные гостей</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Формат отчета</label>
+                            <select id="customReportFormat">
+                                <option value="detailed">Детальный отчет</option>
+                                <option value="summary">Сводный отчет</option>
+                                <option value="analytics">Аналитический отчет</option>
+                            </select>
+                        </div>
+                        
+                        <button class="generate-custom-report-btn" id="generateCustomReportBtn">
+                            <i class="fas fa-file-excel"></i> Сгенерировать отчет Excel
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Модальное окно номера -->
+    <div class="modal" id="roomModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">Добавить номер</h2>
+            
+            <form id="roomForm">
+                <div class="form-group">
+                    <label for="roomName">Название номера (RU) *</label>
+                    <input type="text" id="roomName" placeholder="Стандарт" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="roomNameEn">Название номера (EN) *</label>
+                    <input type="text" id="roomNameEn" placeholder="Standard Room" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="roomType">Тип номера *</label>
+                        <select id="roomType" required>
+                            <option value="standard">Стандарт</option>
+                            <option value="junior">Джуниор Сюит</option>
+                            <option value="luxe">Люкс</option>
+                            <option value="penthouse">Пентхаус</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="roomPrice">Цена за ночь (руб.) *</label>
+                        <input type="number" id="roomPrice" min="1000" step="100" placeholder="5000" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="roomCapacity">Вместимость (чел.) *</label>
+                        <input type="number" id="roomCapacity" min="1" max="6" placeholder="2" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="roomArea">Площадь (м²) *</label>
+                        <input type="text" id="roomArea" placeholder="25" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="roomImage">Ссылка на главное изображение</label>
+                    <input type="text" id="roomImage" placeholder="images/room-standard.jpg">
+                </div>
+                
+                <div class="form-group">
+                    <label>Удобства в номере</label>
+                    <div class="checkboxes">
+                        <label><input type="checkbox" name="wifi"> Бесплатный Wi-Fi</label>
+                        <label><input type="checkbox" name="ac"> Кондиционер</label>
+                        <label><input type="checkbox" name="tv"> Smart TV</label>
+                        <label><input type="checkbox" name="minibar"> Мини-бар</label>
+                        <label><input type="checkbox" name="safe"> Сейф</label>
+                        <label><input type="checkbox" name="breakfast"> Завтрак включен</label>
+                        <label><input type="checkbox" name="jacuzzi"> Джакузи</label>
+                        <label><input type="checkbox" name="view"> Вид на северное сияние</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="roomStatus">Статус номера</label>
+                    <select id="roomStatus">
+                        <option value="available">Доступен для бронирования</option>
+                        <option value="unavailable">На обслуживании</option>
+                        <option value="renovation">На реконструкции</option>
+                    </select>
+                </div>
+                
+                <div class="form-buttons">
+                    <button type="button" class="cancel-btn">Отмена</button>
+                    <button type="submit" class="save-btn">Сохранить номер</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="admin-script.js"></script>
+</body>
+</html>
